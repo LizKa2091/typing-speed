@@ -14,7 +14,7 @@
         <nav class="nav">
             <ul class="nav__list">
                 <li class="nav__item"><a class="nav__item__link" href="index.html">Главная</a></li>
-                <li class="nav__item"><a class="nav__item__link" href="creator-info.html">Об создателе</a></li>
+                <li class="nav__item"><a class="nav__item__link" href="creator-info.html">О создателе</a></li>
                 <li class="nav__item"><a class="nav__item__link" href="contact.html">Обратная связь</a></li>
             </ul>
         </nav>
@@ -24,18 +24,16 @@
             <div class="start-window">
                 <button class="start-window__button-play">Играть</button>
             </div>
-            <div class="game-window">
+            <div class="game-window hidden">
                 <div class="game-window__div-interactive">
-                    <p class="game-window__div-interactive__p">
-                        Вот такой вот текст
-                    </p>
+                    <p class="game-window__div-interactive__p"></p>
                     <input class='game-window__div-interactive__input' type="text">
                 </div>
                 <div class="game-window__div-position">
                     <progress></progress>
                 </div>
             </div>
-            <div class="result-window">
+            <div class="result-window hidden">
                 <p class="result-window__info">
                     Ваш счёт:
                 </p>
@@ -43,7 +41,8 @@
         </main>
     </div>
     <footer class="footer border-divide-top">
-        <span class="footer__span">Проект создан lizka2091. Информация об <a class='footer__span__link' href=''>создателе</a></span>
+        <span class="footer__span">Проект создан lizka2091. Информация о <a class='footer__span__link' href='creator-info.html'>создателе</a></span>
     </footer>
+    <script type='module' src="scripts/gameLoading.js"></script>
 </body>
 </html>
