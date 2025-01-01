@@ -21,6 +21,7 @@ body {
     width: 100%;
     gap: 10px;
 }
+
 .nav__item__link {
     text-decoration: none;
     color: #cccccc;
@@ -67,6 +68,22 @@ body {
     font-size: 1.3rem;
     width: 100%;
     padding: 10px;
+}
+.game-window__div-position {
+    display: flex;
+    justify-content: center;
+    position: relative;
+    margin: 50px 0;
+}
+.game-window__div-position__img {
+    position: relative;
+    top: -15px;
+    left: 15px;
+}
+.game-window__div-position__line {
+    width: 75%;
+    height: 3px;
+    background-color: #000;
 }
 
 .footer {
