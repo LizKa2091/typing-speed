@@ -10,6 +10,7 @@ const playButton = document.querySelector('.start-window__button-play');
 const userInputField = document.querySelector('.game-window__div-interactive__input');
 
 const resultWindow = document.querySelector('.result-window');
+const resultP = document.querySelector('.result-window__info');
 
 const userPositionLine = document.querySelector('.game-window__div-position__line');
 
@@ -17,6 +18,9 @@ const userInputObj = {
     userText: '',
     userInputText: '',
     correctText: '',
+    currentlyTyping: false,
+    startTime: null,
+    speed: null,
     checkpoint: 0,
     errors: 0,
     wrongChars: '',
@@ -43,6 +47,11 @@ const styleErrorInput = (input) => {
     input.style.border = '3px solid red';
     
     const incorrectPart = document.querySelector('.game-window__div-interactive__p__span-incorrect');
+    
+    if (incorrectPart === null) {
+        return;
+    }
+
     incorrectPart.style.color = 'red';
     incorrectPart.style.textDecoration = 'underline';
     incorrectPart.style.fontWeight = 'bold';
@@ -105,16 +114,17 @@ const getInput = (e) => {
         errorMessage.remove();
     }
 
+
     if (userInputObj.errors > 0) {
         userInputObj.rightPartCorrect = userInputObj.correctText.slice(userInputObj.wrongChars, userInputObj.correctText.length);
         userInputObj.middlePartWrong = userInputObj.userText.slice(userInputObj.wrongChars)
     }
 
+    insertWords();
+
     if (userInputObj.showingErrorMessage) {
         styleErrorInput(userInputField);
     }
-
-    insertWords();
 
     const isUpdatePositionAllowed = updatePositionAllowed(userInputObj.correctText.length, userInputObj.userText.length, window.getComputedStyle(userPositionLine).width, userInputObj.checkpoint);
 
@@ -131,8 +141,26 @@ const getInput = (e) => {
     if (userInputObj.correctText === userInputObj.userText) {
         gameWindow.classList.toggle('hidden');
         resultWindow.classList.toggle('hidden');
+
+        resultP.textContent += `${userInputObj.speed.toFixed(2)} знаков в минуту`;
+    }
+
+    if (userInputObj.userText.length > 0 && userInputObj.currentlyTyping) {
+        const currentTime = new Date();
+        const timeElapsed = (currentTime - userInputObj.startTime) / 1000;
+
+        userInputObj.speed = userInputObj.userText.length / (timeElapsed / 60);
+
+    }
+};
+
+const startTimer = () => {
+    if (!userInputObj.currentlyTyping) {
+        userInputObj.startTime = new Date();
+        userInputObj.currentlyTyping = true;
     }
 };
 
 playButton.addEventListener('click', integrateText);
 userInputField.addEventListener('input', getInput);
+userInputField.addEventListener('focus', startTimer);
