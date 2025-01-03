@@ -1,4 +1,5 @@
 import getText from "./getText.js";
+import updatePositionAllowed from './updatePositionAllowed.js';
 
 const startWindow = document.querySelector('.start-window');
 const gameWindow = document.querySelector('.game-window');
@@ -8,10 +9,15 @@ const playButton = document.querySelector('.start-window__button-play');
 
 const userInputField = document.querySelector('.game-window__div-interactive__input');
 
+const resultWindow = document.querySelector('.result-window');
+
+const userPositionLine = document.querySelector('.game-window__div-position__line');
+
 const userInputObj = {
     userText: '',
     userInputText: '',
     correctText: '',
+    checkpoint: 0,
     errors: 0,
     wrongChars: '',
     showingErrorMessage: false
@@ -51,7 +57,7 @@ const insertWords = () => {
     textP.textContent = '';
 
     textP.innerHTML = (!userInputObj.showingErrorMessage ? 
-    `<span class='game-window__div-interactive__p__span-current'>${userInputObj.userText}</span>${userInputObj.correctText.slice(userInputObj.userText.length, userInputObj.correctText.length-1)}`
+    `<span class='game-window__div-interactive__p__span-current'>${userInputObj.userText}</span>${userInputObj.correctText.slice(userInputObj.userText.length, userInputObj.correctText.length)}`
     : `<span class='game-window__div-interactive__p__span-current'>${userInputObj.userText.slice(0, userInputObj.wrongChars)}</span><span class='game-window__div-interactive__p__span-incorrect'>${userInputObj.middlePartWrong}</span>${userInputObj.rightPartCorrect}`
     );
 
@@ -63,9 +69,10 @@ const insertWords = () => {
 const getInput = (e) => {
     userInputObj.userText = e.target.value;
 
+    //avoid backspace errors
     if (userInputObj.userText.trim() === '') {
         return;
-    }    
+    }
 
     //error was detected
     if (userInputField.value !== userInputObj.correctText.slice(0, userInputObj.userText.length)) {
@@ -103,10 +110,27 @@ const getInput = (e) => {
         userInputObj.middlePartWrong = userInputObj.userText.slice(userInputObj.wrongChars)
     }
 
-    insertWords();
-
     if (userInputObj.showingErrorMessage) {
         styleErrorInput(userInputField);
+    }
+
+    insertWords();
+
+    const isUpdatePositionAllowed = updatePositionAllowed(userInputObj.correctText.length, userInputObj.userText.length, window.getComputedStyle(userPositionLine).width, userInputObj.checkpoint);
+
+    if (isUpdatePositionAllowed[0] === true && !userInputObj.showingErrorMessage) {
+        userInputObj.checkpoint++;
+
+        const distance = isUpdatePositionAllowed[1];
+        const userPositionHuman = document.querySelector('.game-window__div-position__img');
+
+        const currentLeft = parseInt(window.getComputedStyle(userPositionHuman).left);
+        userPositionHuman.style.left = `${currentLeft + distance}px`;
+    }
+
+    if (userInputObj.correctText === userInputObj.userText) {
+        gameWindow.classList.toggle('hidden');
+        resultWindow.classList.toggle('hidden');
     }
 };
 

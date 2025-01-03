@@ -79,6 +79,7 @@ body {
     position: relative;
     top: -15px;
     left: 15px;
+    transition: left 0.7s ease;
 }
 .game-window__div-position__line {
     width: 75%;
