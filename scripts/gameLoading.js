@@ -9,12 +9,16 @@ const playButton = document.querySelector('.start-window__button-play');
 
 const userInputField = document.querySelector('.game-window__div-interactive__input');
 
+const speedSpan = document.querySelector('.game-window__div-statistics__span-speed');
+const errorsSpan = document.querySelector('.game-window__div-statistics__span-errors');
+const recordSpan = document.querySelector('.game-window__div-statistics__span-record');
+
 const resultWindow = document.querySelector('.result-window');
 const resultP = document.querySelector('.result-window__info');
 
 const userPositionLine = document.querySelector('.game-window__div-position__line');
 
-const userInputObj = {
+const textInfoObj = {
     userText: '',
     userInputText: '',
     correctText: '',
@@ -33,7 +37,7 @@ const integrateText = async () => {
     const text = await getText();
     switchVisibility();
 
-    userInputObj.correctText = text;
+    textInfoObj.correctText = text;
     textP.innerHTML += `${text}`;
 };
 
@@ -65,9 +69,9 @@ const styleDefaultInput = (input) => {
 const insertWords = () => {
     textP.textContent = '';
 
-    textP.innerHTML = (!userInputObj.showingErrorMessage ? 
-    `<span class='game-window__div-interactive__p__span-current'>${userInputObj.userText}</span>${userInputObj.correctText.slice(userInputObj.userText.length, userInputObj.correctText.length)}`
-    : `<span class='game-window__div-interactive__p__span-current'>${userInputObj.userText.slice(0, userInputObj.wrongChars)}</span><span class='game-window__div-interactive__p__span-incorrect'>${userInputObj.middlePartWrong}</span>${userInputObj.rightPartCorrect}`
+    textP.innerHTML = (!textInfoObj.showingErrorMessage ? 
+    `<span class='game-window__div-interactive__p__span-current'>${textInfoObj.userText}</span>${textInfoObj.correctText.slice(textInfoObj.userText.length, textInfoObj.correctText.length)}`
+    : `<span class='game-window__div-interactive__p__span-current'>${textInfoObj.userText.slice(0, textInfoObj.wrongChars)}</span><span class='game-window__div-interactive__p__span-incorrect'>${textInfoObj.middlePartWrong}</span>${textInfoObj.rightPartCorrect}`
     );
 
     const currTypedText = document.querySelector('.game-window__div-interactive__p__span-current');
@@ -76,26 +80,26 @@ const insertWords = () => {
 };
 
 const getInput = (e) => {
-    userInputObj.userText = e.target.value;
+    textInfoObj.userText = e.target.value;
 
     //avoid backspace errors
-    if (userInputObj.userText.trim() === '') {
+    if (textInfoObj.userText.trim() === '') {
         return;
     }
 
     //error was detected
-    if (userInputField.value !== userInputObj.correctText.slice(0, userInputObj.userText.length)) {
-        userInputObj.errors+=1;
+    if (userInputField.value !== textInfoObj.correctText.slice(0, textInfoObj.userText.length)) {
+        textInfoObj.errors+=1;
 
         //index of error char
-        if (userInputObj.wrongChars.length === 0) {
-            userInputObj.wrongChars = userInputObj.userText.length - 1;
+        if (textInfoObj.wrongChars.length === 0) {
+            textInfoObj.wrongChars = textInfoObj.userText.length - 1;
         }
 
-        //length of wrong chars has changed, then update value of userInputObj.wrongChars
+        //length of wrong chars has changed, then update value of textInfoObj.wrongChars
 
-        if (!userInputObj.showingErrorMessage) {
-            userInputObj.showingErrorMessage = true;
+        if (!textInfoObj.showingErrorMessage) {
+            textInfoObj.showingErrorMessage = true;
             errorMessage.classList.add('error-message');
             errorMessage.style.color = 'red';
             errorMessage.style.fontSize = '1.5rem';
@@ -107,29 +111,29 @@ const getInput = (e) => {
 
     //error wasn't detected
     else {
-        userInputObj.showingErrorMessage = false;
-        userInputObj.wrongChars = '';
+        textInfoObj.showingErrorMessage = false;
+        textInfoObj.wrongChars = '';
 
         styleDefaultInput(userInputField);
         errorMessage.remove();
     }
 
 
-    if (userInputObj.errors > 0) {
-        userInputObj.rightPartCorrect = userInputObj.correctText.slice(userInputObj.wrongChars, userInputObj.correctText.length);
-        userInputObj.middlePartWrong = userInputObj.userText.slice(userInputObj.wrongChars)
+    if (textInfoObj.errors > 0) {
+        textInfoObj.rightPartCorrect = textInfoObj.correctText.slice(textInfoObj.wrongChars, textInfoObj.correctText.length);
+        textInfoObj.middlePartWrong = textInfoObj.userText.slice(textInfoObj.wrongChars)
     }
 
     insertWords();
 
-    if (userInputObj.showingErrorMessage) {
+    if (textInfoObj.showingErrorMessage) {
         styleErrorInput(userInputField);
     }
 
-    const isUpdatePositionAllowed = updatePositionAllowed(userInputObj.correctText.length, userInputObj.userText.length, window.getComputedStyle(userPositionLine).width, userInputObj.checkpoint);
+    const isUpdatePositionAllowed = updatePositionAllowed(textInfoObj.correctText.length, textInfoObj.userText.length, window.getComputedStyle(userPositionLine).width, textInfoObj.checkpoint);
 
-    if (isUpdatePositionAllowed[0] === true && !userInputObj.showingErrorMessage) {
-        userInputObj.checkpoint++;
+    if (isUpdatePositionAllowed[0] === true && !textInfoObj.showingErrorMessage) {
+        textInfoObj.checkpoint++;
 
         const distance = isUpdatePositionAllowed[1];
         const userPositionHuman = document.querySelector('.game-window__div-position__img');
@@ -138,29 +142,42 @@ const getInput = (e) => {
         userPositionHuman.style.left = `${currentLeft + distance}px`;
     }
 
-    if (userInputObj.correctText === userInputObj.userText) {
+    if (textInfoObj.correctText === textInfoObj.userText) {
+        const prevRecord = localStorage.getItem('record');
+        const newRecord = textInfoObj.speed.toFixed(2);
+
+        if (!prevRecord || prevRecord < newRecord) {
+            localStorage.setItem('record', newRecord);
+        }
+
         gameWindow.classList.toggle('hidden');
         resultWindow.classList.toggle('hidden');
 
-        resultP.textContent += `${userInputObj.speed.toFixed(2)} знаков в минуту`;
+        resultP.textContent += `${textInfoObj.speed.toFixed(2)} знаков в минуту, количество ошибок: ${textInfoObj.errors}`;
     }
 
-    if (userInputObj.userText.length > 0 && userInputObj.currentlyTyping) {
+    if (textInfoObj.userText.length > 0 && textInfoObj.currentlyTyping) {
         const currentTime = new Date();
-        const timeElapsed = (currentTime - userInputObj.startTime) / 1000;
+        const timeElapsed = (currentTime - textInfoObj.startTime) / 1000;
 
-        userInputObj.speed = userInputObj.userText.length / (timeElapsed / 60);
-
+        textInfoObj.speed = textInfoObj.userText.length / (timeElapsed / 60);
+        speedSpan.textContent = `Текущая скорость печати: ${textInfoObj.speed.toFixed(2)}`;
+        errorsSpan.textContent = `Текущее кол-во ошибок: ${textInfoObj.errors}`;
     }
 };
 
 const startTimer = () => {
-    if (!userInputObj.currentlyTyping) {
-        userInputObj.startTime = new Date();
-        userInputObj.currentlyTyping = true;
+    if (!textInfoObj.currentlyTyping) {
+        textInfoObj.startTime = new Date();
+        textInfoObj.currentlyTyping = true;
     }
 };
 
 playButton.addEventListener('click', integrateText);
 userInputField.addEventListener('input', getInput);
 userInputField.addEventListener('focus', startTimer);
+document.addEventListener('DOMContentLoaded', () => {
+    const recordData = localStorage.getItem('record');
+
+    recordSpan.textContent = recordData ? `Ваш текущий рекорд: ${recordData} знаков в минуту` : `У вас нет рекорда. Начните игру и установите собственный рекорд!`;
+});
