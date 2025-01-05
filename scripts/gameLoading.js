@@ -2,8 +2,14 @@ import getText from "./getText.js";
 import updatePositionAllowed from './updatePositionAllowed.js';
 
 const startWindow = document.querySelector('.start-window');
+
 const gameWindow = document.querySelector('.game-window');
 const textP = document.querySelector('.game-window__div-interactive__p');
+
+const optionsDiv = document.querySelector('.start-window__div-options');
+const randomTextButton = document.querySelector('.start-window__div-options__button-rand-text');
+const wikiTextButton = document.querySelector('.start-window__div-options__button-wiki-text');
+const randomCompositionButton = document.querySelector('.start-window__div-options__button-rand-comp');
 
 const playButton = document.querySelector('.start-window__button-play');
 
@@ -34,16 +40,30 @@ const textInfoObj = {
 const errorMessage = document.createElement('span');
 
 const integrateText = async () => {
+    showLoading();
+
     const text = await getText();
-    switchVisibility();
+
+    switchWindowVisibility();
 
     textInfoObj.correctText = text;
     textP.innerHTML += `${text}`;
 };
 
-const switchVisibility = () => {
+const switchOptionsVisibility = () => {
+    playButton.classList.toggle('hidden');
+    optionsDiv.classList.toggle('hidden');
+};
+
+const switchWindowVisibility = () => {
     startWindow.classList.toggle('hidden');
     gameWindow.classList.toggle('hidden');
+};
+
+const showLoading = () => {
+    optionsDiv.classList.toggle('hidden');
+
+    document.querySelector('.start-window__div-loading').classList.toggle('hidden');
 };
 
 const styleErrorInput = (input) => {
@@ -173,9 +193,14 @@ const startTimer = () => {
     }
 };
 
-playButton.addEventListener('click', integrateText);
+playButton.addEventListener('click', switchOptionsVisibility);
 userInputField.addEventListener('input', getInput);
 userInputField.addEventListener('focus', startTimer);
+
+randomTextButton.addEventListener('click', integrateText);
+//wikiTextButton.addEventListener('click', );
+//randomCompositionButton.addEventListener('click', )
+
 document.addEventListener('DOMContentLoaded', () => {
     const recordData = localStorage.getItem('record');
 

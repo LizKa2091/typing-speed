@@ -45,14 +45,20 @@ body {
     width: 100%;
     height: clamp(100px, 75vh, 1000px);
 }
-.start-window__button-play {
+.start-window__div-options {
+    display: flex;
+    gap: 10px;
+}
+.start-window__button-play, .start-window__div-options__button-rand-text, .start-window__div-options__button-wiki-text, .start-window__div-options__button-rand-comp {
     font-size: 1.8rem;
     padding: 15px 35px;
     border: 2px solid #fff;
     border-radius: 30px;
     font-family: 'Roboto Slab', sans-serif;
 }
-
+.start-window__div-loading__span {
+    font-size: 1.8rem;
+}
 
 
 .game-window {
