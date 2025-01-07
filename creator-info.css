@@ -1,0 +1,134 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: slategray;
+    font-family: 'Roboto Slab', sans-serif;
+}
+
+.nav {
+    display: flex;
+    justify-content: center;
+    padding: 15px;
+}
+.nav__list {
+    display: flex;
+    justify-content: space-around;
+    list-style-type: none;
+    width: 100%;
+    gap: 10px;
+}
+
+.nav__item__link {
+    text-decoration: none;
+    color: #cccccc;
+    font-size: 1.8rem;
+}
+
+.wrapper {
+    margin: 15px auto;
+    width: clamp(100px, 75vw, 1280px);
+}
+.article {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    margin: 35px 0;
+}
+
+section {
+    padding: 50px 0;
+}
+
+.intro {
+    width: 50vw;
+}
+.intro__h3 {
+    font-size: 2rem;
+}
+.intro__p {
+    font-size: 1.4rem;
+}
+
+.lang-icons {
+    display: flex;
+    justify-content: space-around;
+}
+.lang-icons__icon {
+    display: flex;
+    align-items: center;
+    font-size: 2rem;
+    background-color: blanchedalmond;
+    padding: 10px;
+    border: 2px solid #000;
+    border-radius: 15px 0 15px 0;
+}
+.lang-icons__icon__img {
+    width: 64px;
+    height: 64px;
+}
+
+.why-me {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    column-gap: 25px;
+}
+.why-me__item {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    font-size: 1.35rem;
+    text-align: center;
+    background-color: blanchedalmond;
+    padding: 20px;
+    border: 2px solid #000;
+    border-radius: 15px 0 15px 0;
+}
+.why-me__item__img {
+    width: 100px;
+    height: 100px;
+    margin: 10px;
+}
+.why-me__item__extra {
+    margin-top: 10px;
+    font-size: 0.9rem;
+}
+
+.footer {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    text-align: center;
+    margin: 15px 0;
+}
+.footer__h3 {
+    font-size: 1.5rem;
+}
+.footer__list {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 50px;
+    margin-top: 25px;
+}
+.footer__item__link__img {
+    width: 50px;
+    height: 50px;
+}
+
+.border-divide-bottom {
+    border-bottom: 2px solid #fff;
+}
+.border-divide-top {
+    border-top: 2px solid #fff;
+}
+.hidden {
+    display: none;
+}
+button:hover {
+    cursor: pointer;
+}
