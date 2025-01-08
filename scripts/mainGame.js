@@ -3,15 +3,15 @@ import updatePositionAllowed from './updatePositionAllowed.js';
 
 const startWindow = document.querySelector('.start-window');
 
+const optionsDiv = document.querySelector('.start-window__div-options');
+const playButton = document.querySelector('.start-window__button-play');
+
 const gameWindow = document.querySelector('.game-window');
 const textP = document.querySelector('.game-window__div-interactive__p');
 
-const optionsDiv = document.querySelector('.start-window__div-options');
 const randomTextButton = document.querySelector('.start-window__div-options__button-rand-text');
-const wikiTextButton = document.querySelector('.start-window__div-options__button-wiki-text');
-const randomCompositionButton = document.querySelector('.start-window__div-options__button-rand-comp');
-
-const playButton = document.querySelector('.start-window__button-play');
+//const wikiTextButton = document.querySelector('.start-window__div-options__button-wiki-text');
+//const randomCompositionButton = document.querySelector('.start-window__div-options__button-rand-comp');
 
 const userInputField = document.querySelector('.game-window__div-interactive__input');
 
@@ -24,6 +24,8 @@ const resultP = document.querySelector('.result-window__info');
 
 const userPositionLine = document.querySelector('.game-window__div-position__line');
 
+const errorMessage = document.createElement('span');
+
 const textInfoObj = {
     userText: '',
     userInputText: '',
@@ -35,19 +37,6 @@ const textInfoObj = {
     errors: 0,
     wrongChars: '',
     showingErrorMessage: false
-};
-
-const errorMessage = document.createElement('span');
-
-const integrateText = async () => {
-    showLoading();
-
-    const text = await getText();
-
-    switchWindowVisibility();
-
-    textInfoObj.correctText = text;
-    textP.innerHTML += `${text}`;
 };
 
 const switchOptionsVisibility = () => {
@@ -64,6 +53,21 @@ const showLoading = () => {
     optionsDiv.classList.toggle('hidden');
 
     document.querySelector('.start-window__div-loading').classList.toggle('hidden');
+};
+
+const integrateText = async () => {
+    showLoading();
+
+    const text = await getText();
+
+    switchWindowVisibility();
+
+    textInfoObj.correctText = text;
+    textP.innerHTML += `${text}`;
+
+    const res = await getWikiText();
+
+    document.querySelector('body').innerHTML = res;
 };
 
 const styleErrorInput = (input) => {
@@ -194,6 +198,7 @@ const startTimer = () => {
 };
 
 playButton.addEventListener('click', switchOptionsVisibility);
+
 userInputField.addEventListener('input', getInput);
 userInputField.addEventListener('focus', startTimer);
 
