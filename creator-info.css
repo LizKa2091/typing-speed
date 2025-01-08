@@ -40,17 +40,22 @@ body {
 }
 
 section {
-    padding: 50px 0;
+    padding: 100px 0;
 }
 
 .intro {
-    width: 50vw;
+    display: flex;
+    justify-content: center;
 }
-.intro__h3 {
+.intro__left__h3 {
     font-size: 2rem;
 }
-.intro__p {
+.intro__left__p {
     font-size: 1.4rem;
+}
+.intro__right__img {
+    width: 50px;
+    height: 50px;
 }
 
 .lang-icons {
@@ -72,9 +77,19 @@ section {
 }
 
 .why-me {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    text-align: center;
+}
+.why-me__h3 {
+    font-size: 1.5rem;
+}
+.why-me__list {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
     column-gap: 25px;
+    margin-top: 50px;
 }
 .why-me__item {
     display: flex;
@@ -103,7 +118,7 @@ section {
     justify-content: center;
     flex-direction: column;
     text-align: center;
-    margin: 15px 0;
+    margin-top: 65px;
 }
 .footer__h3 {
     font-size: 1.5rem;
