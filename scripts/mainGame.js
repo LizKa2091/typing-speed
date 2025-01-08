@@ -1,4 +1,5 @@
 import getText from "./getText.js";
+import getWikiText from "./getWikiText.js";
 import updatePositionAllowed from './updatePositionAllowed.js';
 
 const startWindow = document.querySelector('.start-window');
@@ -10,7 +11,7 @@ const gameWindow = document.querySelector('.game-window');
 const textP = document.querySelector('.game-window__div-interactive__p');
 
 const randomTextButton = document.querySelector('.start-window__div-options__button-rand-text');
-//const wikiTextButton = document.querySelector('.start-window__div-options__button-wiki-text');
+const wikiTextButton = document.querySelector('.start-window__div-options__button-wiki-text');
 //const randomCompositionButton = document.querySelector('.start-window__div-options__button-rand-comp');
 
 const userInputField = document.querySelector('.game-window__div-interactive__input');
@@ -55,19 +56,28 @@ const showLoading = () => {
     document.querySelector('.start-window__div-loading').classList.toggle('hidden');
 };
 
-const integrateText = async () => {
+const integrateText = async (type) => {
     showLoading();
 
-    const text = await getText();
+    let res;
+    switch (type) {
+        case 'text':
+            res = await getText();
+            break;
+
+        case 'wiki':
+            res = await getWikiText();
+            break;
+            
+        default: 
+            alert('error. contact admin');
+            break;
+    }
 
     switchWindowVisibility();
 
-    textInfoObj.correctText = text;
-    textP.innerHTML += `${text}`;
-
-    const res = await getWikiText();
-
-    document.querySelector('body').innerHTML = res;
+    textInfoObj.correctText = res;
+    textP.innerHTML += `${res}`;
 };
 
 const styleErrorInput = (input) => {
@@ -202,8 +212,8 @@ playButton.addEventListener('click', switchOptionsVisibility);
 userInputField.addEventListener('input', getInput);
 userInputField.addEventListener('focus', startTimer);
 
-randomTextButton.addEventListener('click', integrateText);
-//wikiTextButton.addEventListener('click', );
+randomTextButton.addEventListener('click', () => integrateText('text'));
+wikiTextButton.addEventListener('click', () => integrateText('wiki'));
 //randomCompositionButton.addEventListener('click', )
 
 document.addEventListener('DOMContentLoaded', () => {
