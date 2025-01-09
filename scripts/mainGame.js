@@ -1,5 +1,6 @@
 import getText from "./getText.js";
 import getWikiText from "./getWikiText.js";
+import getComposition from "./getComposition.js";
 import updatePositionAllowed from './updatePositionAllowed.js';
 
 const startWindow = document.querySelector('.start-window');
@@ -12,7 +13,7 @@ const textP = document.querySelector('.game-window__div-interactive__p');
 
 const randomTextButton = document.querySelector('.start-window__div-options__button-rand-text');
 const wikiTextButton = document.querySelector('.start-window__div-options__button-wiki-text');
-//const randomCompositionButton = document.querySelector('.start-window__div-options__button-rand-comp');
+const randomCompositionButton = document.querySelector('.start-window__div-options__button-rand-comp');
 
 const userInputField = document.querySelector('.game-window__div-interactive__input');
 
@@ -69,6 +70,10 @@ const integrateText = async (type) => {
             res = await getWikiText();
             break;
             
+        case 'composition':
+            res = await getComposition();
+            break;
+
         default: 
             alert('error. contact admin');
             break;
@@ -214,7 +219,7 @@ userInputField.addEventListener('focus', startTimer);
 
 randomTextButton.addEventListener('click', () => integrateText('text'));
 wikiTextButton.addEventListener('click', () => integrateText('wiki'));
-//randomCompositionButton.addEventListener('click', )
+randomCompositionButton.addEventListener('click', () => integrateText('composition'))
 
 document.addEventListener('DOMContentLoaded', () => {
     const recordData = localStorage.getItem('record');

@@ -9,7 +9,7 @@ const getWikiText = async () => {
             const response = await fetch(url);
             
             if (!response.ok) {
-                throw new Error('Bad response status');
+                throw new Error('response status not ok');
             }
             
             const data = await response.json();

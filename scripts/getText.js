@@ -3,7 +3,7 @@ const getText = async () => {
         const response = await fetch('https://fish-text.ru/get?number=5');
         
         if (!response.ok) {
-            throw new Error('ответ сервера: ошибка');
+            throw new Error('response status not ok');
         }
 
         const res = await response.json();
@@ -11,8 +11,8 @@ const getText = async () => {
         
         return generatedText;
     } 
-    catch (error) {
-        console.error('Ошибка при получении текста:', error);
+    catch (err) {
+        throw new Error(`failed to fetch: ${err}`);
     }
 };
 
