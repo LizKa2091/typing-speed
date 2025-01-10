@@ -8,6 +8,11 @@ const startWindow = document.querySelector('.start-window');
 const optionsDiv = document.querySelector('.start-window__div-options');
 const playButton = document.querySelector('.start-window__button-play');
 
+const compositionInputDiv = document.querySelector('.start-window__div-comp-query');
+const compositionInput = document.querySelector('.start-window__div-comp-query__input');
+const compositionButton = document.querySelector('.start-window__div-comp-query__button');
+const errMsg = document.querySelector('.error-message');
+
 const gameWindow = document.querySelector('.game-window');
 const textP = document.querySelector('.game-window__div-interactive__p');
 
@@ -57,6 +62,48 @@ const showLoading = () => {
     document.querySelector('.start-window__div-loading').classList.toggle('hidden');
 };
 
+const reqUserCompositionInput = () => {
+    optionsDiv.classList.toggle('hidden');
+    compositionInputDiv.classList.toggle('hidden');
+
+    compositionInput.addEventListener('input', getCompositionInput);
+    compositionButton.addEventListener('click', processCompositionButton);
+};
+
+const getCompositionInput = (e) => {
+    const value = e.target.value;
+
+    const allLettersAreEn = [...value].every(char => 'a' <= char.toLowerCase() && char.toLowerCase() <= 'z');
+
+    if (!allLettersAreEn) {
+        errMsg.textContent = 'Все символы должны быть английскими буквами';
+        compositionButton.style.cursor = 'not-allowed';
+    }
+
+    const isOnlyOneWord = !value.includes(' ');
+
+    if (!isOnlyOneWord) {
+        errMsg.textContent = 'Должно быть всего 1 слово без пробелов';
+        compositionButton.style.cursor = 'not-allowed';
+    }
+
+    if (allLettersAreEn && isOnlyOneWord) {
+        errMsg.textContent = '';
+        compositionInput.style.borderColor = '#fff';
+        compositionButton.style.cursor = 'pointer';
+    }
+};
+
+const processCompositionButton = () => {
+    const errMsgLatest = document.querySelector('.error-message');
+    const compositionInputLatest = document.querySelector('.start-window__div-comp-query__input');
+
+    //if error-message is empty, then no errors
+    if (errMsgLatest.textContent === '' && compositionInputLatest.value !== '') {
+        integrateText(compositionInputLatest.value);
+    }
+};
+
 const integrateText = async (type) => {
     showLoading();
 
@@ -73,16 +120,30 @@ const integrateText = async (type) => {
         case 'composition':
             res = await getComposition();
             break;
-
+        
+        //composition
         default: 
-            alert('error. contact admin');
+            optionsDiv.classList.toggle('hidden');
+            compositionInputDiv.classList.toggle('hidden');
+
+            res = await getComposition(type);
             break;
     }
+    
+    if (res) {
+        switchWindowVisibility();
 
-    switchWindowVisibility();
+        textInfoObj.correctText = res;
+        textP.innerHTML += `${res}`;
+    }
 
-    textInfoObj.correctText = res;
-    textP.innerHTML += `${res}`;
+    //no result
+    else {
+        compositionInputDiv.classList.toggle('hidden');
+        document.querySelector('.start-window__div-loading').classList.toggle('hidden');
+        
+        errMsg.textContent = 'По вашему запросу ничего не найдено. Попробуйте другое слово'
+    }
 };
 
 const styleErrorInput = (input) => {
@@ -219,7 +280,8 @@ userInputField.addEventListener('focus', startTimer);
 
 randomTextButton.addEventListener('click', () => integrateText('text'));
 wikiTextButton.addEventListener('click', () => integrateText('wiki'));
-randomCompositionButton.addEventListener('click', () => integrateText('composition'))
+//randomCompositionButton.addEventListener('click', () => integrateText('composition'))
+randomCompositionButton.addEventListener('click', reqUserCompositionInput)
 
 document.addEventListener('DOMContentLoaded', () => {
     const recordData = localStorage.getItem('record');

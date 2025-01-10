@@ -1,5 +1,5 @@
-const getComposition = async () => {
-    const url = 'https://www.googleapis.com/books/v1/volumes?q=ronnie&langRestrict=en&maxResults=5';
+const getComposition = async (requestWord) => {
+    const url = `https://www.googleapis.com/books/v1/volumes?q=${requestWord}&langRestrict=en&maxResults=5`;
 
     try {
         let successResult = false;
@@ -26,6 +26,7 @@ const getComposition = async () => {
             }
             reqLimit--;
         }
+        return null;
     }
     catch (err) {
         throw new Error(`failed to fetch: ${err}`);

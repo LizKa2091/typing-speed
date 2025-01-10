@@ -59,6 +59,66 @@ body {
     font-size: 1.8rem;
 }
 
+.start-window__div-comp-query {
+    position: relative;
+    width: 22.4rem;
+    height: 3rem;
+}
+.start-window__div-comp-query__input {
+    position: absolute;
+    top: -0.5rem;
+    left: 0.25rem;
+    width: 100%;
+    height: 100%;
+    border: 2px solid white;
+    border-radius: 0.5rem;
+    font-family: inherit;
+    font-size: inherit;
+    color: white;
+    outline: none;
+    padding: 1.25rem;
+    background: none;
+}
+.start-window__div-comp-query__input:hover {
+    border-color: #adffff;
+}
+.start-window__div-comp-query__input:focus {
+    border-color: #18ffff;
+}
+.start-window__div-comp-query__label {
+    position: absolute;
+    color: rgb(189, 189, 189);
+    left: 1rem;
+    top: 0.25rem;
+    padding: 0 0.5rem;
+    cursor: text;
+    transition: top 200ms ease-in, 
+        left 200ms ease-in,
+        font-size 200ms ease-in;
+    background-color: slategray;
+}
+.start-window__div-comp-query__input:focus ~ .start-window__div-comp-query__label, .start-window__div-comp-query__input:not(:placeholder-shown).start-window__div-comp-query__input:not(:focus) ~ .start-window__div-comp-query__label {
+    top: -1rem;
+    font-size: 0.9rem;
+    left: 0.8rem;
+}
+.start-window__div-comp-query__button {
+    position: absolute;
+    top: 3rem;
+    left: 8.5rem;
+    font-size: 1.2rem;
+    font-family: 'Roboto Slab', sans-serif;
+    border: 1px solid #fff;
+    border-radius: 30px;
+    padding: 0.5rem 1rem;
+}
+.error-message {
+    position: absolute;
+    top: -2.5rem;
+    color: red;
+    font-size: 1.2rem;
+    width: max-content;
+}
 
 .game-window {
     border: 1px solid #fff;
