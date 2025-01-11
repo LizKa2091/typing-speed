@@ -51,6 +51,8 @@ const textInfoObj = {
 const switchOptionsVisibility = () => {
     playButton.classList.toggle('hidden');
     optionsDiv.classList.toggle('hidden');
+
+    textInfoObj.errors = 0;
 };
 
 const switchWindowVisibility = () => {
