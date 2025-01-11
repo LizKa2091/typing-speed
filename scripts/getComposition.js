@@ -19,8 +19,20 @@ const getComposition = async (requestWord) => {
     
                     if (desc && language === 'en' && desc.length >= 700) {
                        successResult = true;
-                       let resultText = desc.slice(0, 700).replaceAll('’', `'`);
-                       //add improved slice. last word is now not full
+
+                       let lastSymb = 700;
+                        //if 700th symbol is a letter from en alphabet, the word hasn't finished
+                        if ('a' <= desc[700] && desc[700] <= 'z') {
+                            for (let i=701; i<desc.length; i++) {
+
+                                if (!('a' <= desc[i] && desc[i] <= 'z')) {
+                                    lastSymb = i;
+                                    break;
+                                }
+                            }
+                        }
+
+                       let resultText = desc.slice(0, lastSymb).replaceAll('’', `'`);
 
                        return [resultText, imageLink, authors, title];
                     }
