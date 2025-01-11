@@ -22,7 +22,7 @@ const getWikiText = async () => {
                 wrongReq = false;
             }
         }
-        return articleText.replaceAll('=', '').replaceAll('–', '-').slice(0, 700);
+        return [articleText.replaceAll('=', '').replaceAll('–', '-').slice(0, 700), null];
     }
     catch (err) {
         throw new Error(`Failed to fetch article: `, err);

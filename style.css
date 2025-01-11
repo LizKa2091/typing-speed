@@ -153,6 +153,24 @@ body {
     background-color: #000;
 }
 
+.result-window {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 25px;
+}
+.result-window__info {
+    font-size: 1.5rem;
+}
+.result-window__book-info {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+}
+.result-window__book-info__title {
+    margin: 10px 0;
+}
+
 .footer {
     display: flex;
     justify-content: center;

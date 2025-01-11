@@ -9,7 +9,7 @@ const getText = async () => {
         const res = await response.json();
         const generatedText = res.text;
         
-        return generatedText.replaceAll('—', '-');
+        return [generatedText.replaceAll('—', '-'), null];
     } 
     catch (err) {
         throw new Error(`failed to fetch: ${err}`);

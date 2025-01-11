@@ -13,14 +13,16 @@ const getComposition = async (requestWord) => {
                 for (let item of data.items) {
                     let desc = item.volumeInfo.description;
                     let language = item.volumeInfo.language;
+                    let imageLink = item.volumeInfo.imageLinks.thumbnail;
+                    let authors = item.volumeInfo.authors;
+                    let title = item.volumeInfo.title;
     
                     if (desc && language === 'en' && desc.length >= 700) {
                        successResult = true;
-                       let result = desc.slice(0, 700);
+                       let resultText = desc.slice(0, 700).replaceAll('’', `'`);
                        //add improved slice. last word is now not full
-                       //add book image, title and author
 
-                       return result;
+                       return [resultText, imageLink, authors, title];
                     }
                 };
             }

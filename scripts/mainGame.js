@@ -28,6 +28,7 @@ const recordSpan = document.querySelector('.game-window__div-statistics__span-re
 
 const resultWindow = document.querySelector('.result-window');
 const resultP = document.querySelector('.result-window__info');
+const resultBookDiv = document.querySelector('.result-window__book-info');
 
 const userPositionLine = document.querySelector('.game-window__div-position__line');
 
@@ -43,7 +44,8 @@ const textInfoObj = {
     checkpoint: 0,
     errors: 0,
     wrongChars: '',
-    showingErrorMessage: false
+    showingErrorMessage: false,
+    isComposition: false
 };
 
 const switchOptionsVisibility = () => {
@@ -111,30 +113,37 @@ const integrateText = async (type) => {
     switch (type) {
         case 'text':
             res = await getText();
+
+            textInfoObj.isComposition = false;
             break;
 
         case 'wiki':
             res = await getWikiText();
+
+            textInfoObj.isComposition = false;
             break;
-            
-        case 'composition':
-            res = await getComposition();
-            break;
-        
         //composition
         default: 
             optionsDiv.classList.toggle('hidden');
             compositionInputDiv.classList.toggle('hidden');
 
             res = await getComposition(type);
+
+            textInfoObj.isComposition = true;
+            textInfoObj.bookAuthors = res[2];
+            textInfoObj.bookTitle = res[3];
             break;
     }
     
     if (res) {
         switchWindowVisibility();
 
-        textInfoObj.correctText = res;
-        textP.innerHTML += `${res}`;
+        textInfoObj.correctText = res[0];
+        textP.innerHTML += `${res[0]}`;
+
+        if (res[1]) {
+            textInfoObj.bookImage = res[1];
+        }
     }
 
     //no result
@@ -250,10 +259,21 @@ const getInput = (e) => {
             localStorage.setItem('record', newRecord);
         }
 
-        gameWindow.classList.toggle('hidden');
+        gameWindow.classList.toggle('hidden');  
         resultWindow.classList.toggle('hidden');
+        
+        if (textInfoObj.isComposition) {
+            resultBookDiv.innerHTML = '';
+            resultBookDiv.innerHTML = `<p class='result-window__book-info__author'>${textInfoObj.bookAuthors.length > 1 ? 'Авторы' : 'Автор'}: ${textInfoObj.bookAuthors[0]}${textInfoObj.bookAuthors.slice(1).join(', ') ? '<br>' + textInfoObj.bookAuthors.slice(1).join(', ') : ''}</p>
+                                        <p class='result-window__book-info__title'>Название: ${textInfoObj.bookTitle}</p>`;
 
-        resultP.textContent += `${textInfoObj.speed.toFixed(2)} знаков в минуту, количество ошибок: ${textInfoObj.errors}`;
+            if (textInfoObj.bookImage) {
+                resultBookDiv.innerHTML += `<img src=${textInfoObj.bookImage} alt='book image'>`;
+            }
+        }
+
+        resultP.innerHTML = '';
+        resultP.innerHTML = `<p>Игра пройдена <br> Ваш результат: ${textInfoObj.speed.toFixed(2)} знаков в минуту <br> Количество ошибок: ${textInfoObj.errors}`;
     }
 
     if (textInfoObj.userText.length > 0 && textInfoObj.currentlyTyping) {
