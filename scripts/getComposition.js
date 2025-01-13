@@ -3,7 +3,7 @@ const getComposition = async (requestWord) => {
 
     try {
         let successResult = false;
-        let reqLimit = 25;
+        let reqLimit = 5;
 
         while (!successResult && reqLimit > 0) {
             const res = await fetch(url);
