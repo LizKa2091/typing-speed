@@ -48,6 +48,8 @@ const textInfoObj = {
     isComposition: false
 };
 
+//при backspace не прибавлять ошибку
+
 const switchOptionsVisibility = () => {
     playButton.classList.toggle('hidden');
     optionsDiv.classList.toggle('hidden');
@@ -302,7 +304,6 @@ userInputField.addEventListener('focus', startTimer);
 
 randomTextButton.addEventListener('click', () => integrateText('text'));
 wikiTextButton.addEventListener('click', () => integrateText('wiki'));
-//randomCompositionButton.addEventListener('click', () => integrateText('composition'))
 randomCompositionButton.addEventListener('click', reqUserCompositionInput)
 
 document.addEventListener('DOMContentLoaded', () => {
