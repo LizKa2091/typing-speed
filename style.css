@@ -121,6 +121,9 @@ body {
     font-size: 1.2rem;
     width: max-content;
 }
+.result-window {
+    color: #afafaf;
+}
 
 .game-window {
     border: 1px solid #afafaf;
