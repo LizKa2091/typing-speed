@@ -134,9 +134,11 @@ const integrateText = async (type) => {
 
             res = await getComposition(type);
 
-            textInfoObj.isComposition = true;
-            textInfoObj.bookAuthors = res[2];
-            textInfoObj.bookTitle = res[3];
+            if (res) {
+                textInfoObj.isComposition = true;
+                textInfoObj.bookAuthors = res[2];
+                textInfoObj.bookTitle = res[3];
+            }
             break;
     }
     
