@@ -55,6 +55,7 @@ const switchOptionsVisibility = () => {
     optionsDiv.classList.toggle('hidden');
 
     textInfoObj.errors = 0;
+    userInputField.value = '';
 };
 
 const switchWindowVisibility = () => {
