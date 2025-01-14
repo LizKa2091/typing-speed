@@ -198,7 +198,7 @@ const insertWords = () => {
 const getInput = (e) => {
     textInfoObj.userText = e.target.value;
 
-    //avoid backspace errors
+    //avoid space errors
     if (textInfoObj.userText.trim() === '') {
         return;
     }
