@@ -197,6 +197,9 @@ body {
     justify-content: center;
     font-size: var(--footer-f-size);
     padding: 15px 0;
+    width: 100vw;
+    position: absolute;
+    bottom: 5px;
 }
 .footer__span {
     text-align: center;
