@@ -1,3 +1,13 @@
+:root {
+    --nav-item-f-size: 1.8rem;
+    --footer-f-size: 1.3rem;
+    --button-f-size: 1.8rem;
+    --button-padding: 15px 35px;
+    --result-author-f-size: 1.4rem;
+    --result-title-f-size: 1.5rem;
+    --result-info-f-size: 1.7rem;
+    --start-book-label: 1rem;
+}
 * {
     margin: 0;
     padding: 0;
@@ -26,7 +36,7 @@ body {
 .nav__item__link {
     text-decoration: none;
     color: #e0e0e0;
-    font-size: 1.8rem;
+    font-size: var(--nav-item-f-size);
     transition: all .2s ease-in;
 }
 
@@ -51,8 +61,8 @@ body {
     gap: 10px;
 }
 .start-window__button-play, .start-window__div-options__button-rand-text, .start-window__div-options__button-wiki-text, .start-window__div-options__button-rand-comp {
-    font-size: 1.8rem;
-    padding: 15px 35px;
+    font-size: var(--button-f-size);
+    padding: var(--button-padding);
     border: 2px solid #afafaf;
     border-radius: 30px;
     font-family: 'Roboto Slab', sans-serif;
@@ -62,6 +72,8 @@ body {
 }
 
 .start-window__div-comp-query {
+    display: flex;
+    justify-content: center;
     position: relative;
     width: 22.4rem;
     height: 3rem;
@@ -94,6 +106,7 @@ body {
     top: 0.25rem;
     padding: 0 0.5rem;
     cursor: text;
+    font-size: var(--start-book-label);
     transition: top 200ms ease-in, 
         left 200ms ease-in,
         font-size 200ms ease-in;
@@ -105,9 +118,8 @@ body {
     left: 0.8rem;
 }
 .start-window__div-comp-query__button {
-    position: absolute;
+    position: relative;
     top: 3rem;
-    left: 8.5rem;
     font-size: 1.2rem;
     font-family: 'Roboto Slab', sans-serif;
     border: 1px solid #afafaf;
@@ -121,15 +133,11 @@ body {
     font-size: 1.2rem;
     width: max-content;
 }
-.result-window {
-    color: #afafaf;
-}
 
 .game-window {
     border: 1px solid #afafaf;
     border-radius: 15px;
     padding: 10% 10%;
-    height: clamp(100px, 82.5vh, 1500px);
 }
 .game-window__div-interactive__p {
     font-size: 1.3rem;
@@ -164,24 +172,34 @@ body {
     justify-content: center;
     align-items: center;
     gap: 25px;
+    height: 80vh;
+    color: #afafaf;
 }
 .result-window__info {
-    font-size: 1.5rem;
+    font-size: var(--result-info-f-size);
 }
 .result-window__book-info {
     display: flex;
     justify-content: center;
     flex-direction: column;
 }
+.result-window__book-info__author {
+    font-size: var(--result-author-f-size);
+}
 .result-window__book-info__title {
+    font-size: var(--result-title-f-size);
     margin: 10px 0;
 }
 
 .footer {
     display: flex;
     justify-content: center;
-    font-size: 1.3rem;
+    font-size: var(--footer-f-size);
     padding: 15px 0;
+}
+.footer__span {
+    text-align: center;
+    padding: 0 25px;
 }
 .nav__item__link:hover {
     color: #fff;
@@ -319,4 +337,75 @@ button:hover {
 	100% {
 		-moz-transform: perspective(117px) rotateX(-180deg) rotateY(-179.9deg);
 	}
+}
+
+@media (max-width: 768px) {
+    :root {
+        --result-author-f-size: 1.1rem;
+        --result-title-f-size: 1.2rem;
+        --result-info-f-size: 1.4rem;
+        --button-f-size: 1.4rem;
+        --button-padding: 15px 20px;
+    }
+    .error-message {
+        font-size: 1rem;
+    }
+}
+@media (max-width: 600px) {
+    :root {
+        --nav-item-f-size: 1.2rem;
+        --footer-f-size: 1rem;
+    }
+    .result-window {
+        flex-direction: column-reverse;
+    }
+    .result-window__info {
+        display: flex;
+        text-align: center;
+    }
+    .start-window__div-options {
+        flex-direction: column;
+    }
+}
+@media (max-width: 450px) {
+    :root {
+        --button-f-size: 1.3rem;
+        --start-book-label: 0.8rem;
+    }
+    .wrapper {
+        width: clamp(100px, 95vw, 1280px);
+    }
+    .game-window {
+        padding: 10px;
+    }
+    .error-message {
+        font-size: 0.7rem;
+    }
+    .start-window__div-comp-query__label {
+        top: 0.5rem;
+    }
+    .start-window__div-comp-query__input:focus ~ .start-window__div-comp-query__label, .start-window__div-comp-query__input:not(:placeholder-shown).start-window__div-comp-query__input:not(:focus) ~ .start-window__div-comp-query__label {
+        top: -1rem;
+        font-size: 0.6rem;
+        left: 0.8rem;
+    }
+    .nav__item:last-of-type {
+        display: none;
+    }
+}
+@media (max-width: 375px) {
+    :root {
+        --result-author-f-size: 1rem;
+        --result-title-f-size: 1.1rem;
+        --result-info-f-size: 1.2rem;
+        --start-book-label: 0.65rem;
+    }
+}
+@media (max-height: 800px) {
+    .result-window {
+        height: 100%;
+    }
+    .result-window__book-info img {
+        transform: scale(0.7);
+    }
 }
