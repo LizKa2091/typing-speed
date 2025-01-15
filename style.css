@@ -7,6 +7,7 @@
     --result-title-f-size: 1.5rem;
     --result-info-f-size: 1.7rem;
     --start-book-label: 1rem;
+    --display-text-f-size: 1.3rem;
 }
 * {
     margin: 0;
@@ -140,7 +141,7 @@ body {
     padding: 10% 10%;
 }
 .game-window__div-interactive__p {
-    font-size: 1.3rem;
+    font-size: var(--display-text-f-size);
     margin-bottom: 20px;
 }
 .game-window__div-interactive__input {
@@ -371,6 +372,7 @@ button:hover {
     :root {
         --button-f-size: 1.3rem;
         --start-book-label: 0.8rem;
+        --display-text-f-size: 1.1rem;
     }
     .wrapper {
         width: clamp(100px, 95vw, 1280px);

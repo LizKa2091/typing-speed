@@ -17,13 +17,13 @@ const getComposition = async (requestWord) => {
                     let authors = item.volumeInfo.authors;
                     let title = item.volumeInfo.title;
     
-                    if (desc && language === 'en' && desc.length >= 700) {
+                    if (desc && language === 'en' && desc.length >= 500) {
                        successResult = true;
 
-                       let lastSymb = 700;
+                       let lastSymb = 500;
                         //if 700th symbol is a letter from en alphabet, the word hasn't finished
-                        if ('a' <= desc[700] && desc[700] <= 'z') {
-                            for (let i=701; i<desc.length; i++) {
+                        if ('a' <= desc[500] && desc[500] <= 'z') {
+                            for (let i=501; i<desc.length; i++) {
 
                                 if (!('a' <= desc[i] && desc[i] <= 'z')) {
                                     lastSymb = i;
