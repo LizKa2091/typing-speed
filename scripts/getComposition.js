@@ -21,7 +21,7 @@ const getComposition = async (requestWord) => {
                        successResult = true;
 
                        let lastSymb = 500;
-                        //if 700th symbol is a letter from en alphabet, the word hasn't finished
+                        //if 500th symbol is a letter from en alphabet, the word hasn't finished
                         if ('a' <= desc[500] && desc[500] <= 'z') {
                             for (let i=501; i<desc.length; i++) {
 
