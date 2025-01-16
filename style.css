@@ -8,6 +8,7 @@
     --result-info-f-size: 1.7rem;
     --start-book-label: 1rem;
     --display-text-f-size: 1.3rem;
+    --game-window-margin: 50px 0 18px 0;
 }
 * {
     margin: 0;
@@ -43,7 +44,7 @@ body {
 
 .wrapper {
     margin: 15px auto;
-    width: clamp(100px, 75vw, 1280px);
+    width: clamp(100px, 75dvw, 1280px);
 }
 .main {
     display: flex;
@@ -55,7 +56,7 @@ body {
     justify-content: center;
     align-items: center;
     width: 100%;
-    height: clamp(100px, 82.5vh, 1500px);
+    height: clamp(100px, 82.5dvh, 1500px);
 }
 .start-window__div-options {
     display: flex;
@@ -154,7 +155,7 @@ body {
     display: flex;
     justify-content: center;
     position: relative;
-    margin: 50px 0;
+    margin: var(--game-window-margin);
 }
 .game-window__div-position__img {
     position: relative;
@@ -173,7 +174,7 @@ body {
     justify-content: center;
     align-items: center;
     gap: 25px;
-    height: 80vh;
+    height: 80dvh;
     color: #afafaf;
 }
 .result-window__info {
@@ -197,7 +198,7 @@ body {
     justify-content: center;
     font-size: var(--footer-f-size);
     padding: 15px 0;
-    width: 100vw;
+    width: 100dvw;
     position: absolute;
     bottom: 5px;
 }
@@ -350,6 +351,7 @@ button:hover {
         --result-info-f-size: 1.4rem;
         --button-f-size: 1.4rem;
         --button-padding: 15px 20px;
+        --game-window-margin: 32px 0 0 0;
     }
     .error-message {
         font-size: 1rem;
@@ -378,7 +380,7 @@ button:hover {
         --display-text-f-size: 1.1rem;
     }
     .wrapper {
-        width: clamp(100px, 95vw, 1280px);
+        width: clamp(100px, 95dvw, 1280px);
     }
     .game-window {
         padding: 10px;
@@ -412,5 +414,10 @@ button:hover {
     }
     .result-window__book-info img {
         transform: scale(0.7);
+    }
+}
+@media (max-height: 760px) {
+    .footer {
+        position: static;
     }
 }
