@@ -198,12 +198,15 @@ const insertWords = () => {
 const getInput = (e) => {
     textInfoObj.userText = e.target.value;
 
-    //avoid space errors
     if (textInfoObj.userText.trim() === '') {
+        textP.textContent = '';
+        textP.innerHTML = `<span class='game-window__div-interactive__p__span-current'>${textInfoObj.userText}</span>${textInfoObj.correctText.slice(textInfoObj.userText.length, textInfoObj.correctText.length)}`
+
+        styleDefaultInput(userInputField);
+    
         return;
     }
 
-    //error was detected
     if (userInputField.value !== textInfoObj.correctText.slice(0, textInfoObj.userText.length)) {
         textInfoObj.errors+=1;
 
@@ -212,7 +215,6 @@ const getInput = (e) => {
             textInfoObj.wrongChars = textInfoObj.userText.length - 1;
         }
 
-        //length of wrong chars has changed, then update value of textInfoObj.wrongChars
 
         if (!textInfoObj.showingErrorMessage) {
             textInfoObj.showingErrorMessage = true;
@@ -225,7 +227,6 @@ const getInput = (e) => {
         userInputField.parentNode.insertBefore(errorMessage, userInputField);
     }
 
-    //error wasn't detected
     else {
         textInfoObj.showingErrorMessage = false;
         textInfoObj.wrongChars = '';
