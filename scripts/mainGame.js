@@ -3,34 +3,28 @@ import getWikiText from "./getWikiText.js";
 import getComposition from "./getComposition.js";
 import updatePositionAllowed from './updatePositionAllowed.js';
 
-const startWindow = document.querySelector('.start-window');
-
-const optionsDiv = document.querySelector('.start-window__div-options');
-const playButton = document.querySelector('.start-window__button-play');
-
-const compositionInputDiv = document.querySelector('.start-window__div-comp-query');
-const compositionInput = document.querySelector('.start-window__div-comp-query__input');
-const compositionButton = document.querySelector('.start-window__div-comp-query__button');
-const errMsg = document.querySelector('.error-message');
-
-const gameWindow = document.querySelector('.game-window');
-const textP = document.querySelector('.game-window__div-interactive__p');
-
-const randomTextButton = document.querySelector('.start-window__div-options__button-rand-text');
-const wikiTextButton = document.querySelector('.start-window__div-options__button-wiki-text');
-const randomCompositionButton = document.querySelector('.start-window__div-options__button-rand-comp');
-
-const userInputField = document.querySelector('.game-window__div-interactive__input');
-
-const speedSpan = document.querySelector('.game-window__div-statistics__span-speed');
-const errorsSpan = document.querySelector('.game-window__div-statistics__span-errors');
-const recordSpan = document.querySelector('.game-window__div-statistics__span-record');
-
-const resultWindow = document.querySelector('.result-window');
-const resultP = document.querySelector('.result-window__info');
-const resultBookDiv = document.querySelector('.result-window__book-info');
-
-const userPositionLine = document.querySelector('.game-window__div-position__line');
+const elements = {
+    startWindow: document.querySelector('.start-window'),
+    optionsDiv: document.querySelector('.start-window__div-options'),
+    playButton: document.querySelector('.start-window__button-play'),
+    compositionInputDiv: document.querySelector('.start-window__div-comp-query'),
+    compositionInput: document.querySelector('.start-window__div-comp-query__input'),
+    compositionButton: document.querySelector('.start-window__div-comp-query__button'),
+    errMsg: document.querySelector('.error-message'),
+    gameWindow: document.querySelector('.game-window'),
+    textP: document.querySelector('.game-window__div-interactive__p'),
+    randomTextButton: document.querySelector('.start-window__div-options__button-rand-text'),
+    wikiTextButton: document.querySelector('.start-window__div-options__button-wiki-text'),
+    randomCompositionButton: document.querySelector('.start-window__div-options__button-rand-comp'),
+    userInputField: document.querySelector('.game-window__div-interactive__input'),
+    speedSpan: document.querySelector('.game-window__div-statistics__span-speed'),
+    errorsSpan: document.querySelector('.game-window__div-statistics__span-errors'),
+    recordSpan: document.querySelector('.game-window__div-statistics__span-record'),
+    resultWindow: document.querySelector('.result-window'),
+    resultP: document.querySelector('.result-window__info'),
+    resultBookDiv: document.querySelector('.result-window__book-info'),
+    userPositionLine: document.querySelector('.game-window__div-position__line'),
+}; 
 
 const errorMessage = document.createElement('span');
 
@@ -48,66 +42,59 @@ const textInfoObj = {
     isComposition: false
 };
 
-//при backspace не прибавлять ошибку
-
 const switchOptionsVisibility = () => {
-    playButton.classList.toggle('hidden');
-    optionsDiv.classList.toggle('hidden');
+    elements.playButton.classList.toggle('hidden');
+    elements.optionsDiv.classList.toggle('hidden');
 
     textInfoObj.errors = 0;
-    userInputField.value = '';
+    elements.userInputField.value = '';
 };
 
 const switchWindowVisibility = () => {
-    startWindow.classList.toggle('hidden');
-    gameWindow.classList.toggle('hidden');
+    elements.startWindow.classList.toggle('hidden');
+    elements.gameWindow.classList.toggle('hidden');
 };
 
 const showLoading = () => {
-    optionsDiv.classList.toggle('hidden');
+    elements.optionsDiv.classList.toggle('hidden');
 
     document.querySelector('.start-window__div-loading').classList.toggle('hidden');
 };
 
 const reqUserCompositionInput = () => {
-    optionsDiv.classList.toggle('hidden');
-    compositionInputDiv.classList.toggle('hidden');
+    elements.optionsDiv.classList.toggle('hidden');
+    elements.compositionInputDiv.classList.toggle('hidden');
 
-    compositionInput.addEventListener('input', getCompositionInput);
-    compositionButton.addEventListener('click', processCompositionButton);
+    elements.compositionInput.addEventListener('input', getCompositionInput);
+    elements.compositionButton.addEventListener('click', processCompositionButton);
 };
 
 const getCompositionInput = (e) => {
     const value = e.target.value;
 
-    const allLettersAreEn = [...value].every(char => 'a' <= char.toLowerCase() && char.toLowerCase() <= 'z');
+    const allLettersAreEn = /^[a-zA-Z]+$/.test(value);
+    const isSingleWord = !value.includes(' ');
 
     if (!allLettersAreEn) {
-        errMsg.textContent = 'Все символы должны быть английскими буквами';
-        compositionButton.style.cursor = 'not-allowed';
+        elements.errMsg.textContent = 'Все символы должны быть английскими буквами';
+        elements.compositionButton.style.cursor = 'not-allowed';
     }
 
-    const isOnlyOneWord = !value.includes(' ');
-
-    if (!isOnlyOneWord) {
-        errMsg.textContent = 'Должно быть всего 1 слово без пробелов';
-        compositionButton.style.cursor = 'not-allowed';
+    if (!isSingleWord) {
+        elements.errMsg.textContent = 'Должно быть всего 1 слово без пробелов';
+        elements.compositionButton.style.cursor = 'not-allowed';
     }
 
-    if (allLettersAreEn && isOnlyOneWord) {
-        errMsg.textContent = '';
-        compositionInput.style.borderColor = '#fff';
-        compositionButton.style.cursor = 'pointer';
+    if (allLettersAreEn && isSingleWord) {
+        elements.errMsg.textContent = '';
+        elements.compositionInput.style.borderColor = '#fff';
+        elements.compositionButton.style.cursor = 'pointer';
     }
 };
 
 const processCompositionButton = () => {
-    const errMsgLatest = document.querySelector('.error-message');
-    const compositionInputLatest = document.querySelector('.start-window__div-comp-query__input');
-
-    //if error-message is empty, then no errors
-    if (errMsgLatest.textContent === '' && compositionInputLatest.value !== '') {
-        integrateText(compositionInputLatest.value);
+    if (elements.errMsg.textContent === '' && elements.compositionInput.value !== '') {
+        integrateText(elements.compositionInput.value);
     }
 };
 
@@ -127,10 +114,9 @@ const integrateText = async (type) => {
 
             textInfoObj.isComposition = false;
             break;
-        //composition
         default: 
-            optionsDiv.classList.toggle('hidden');
-            compositionInputDiv.classList.toggle('hidden');
+            elements.optionsDiv.classList.toggle('hidden');
+            elements.compositionInputDiv.classList.toggle('hidden');
 
             res = await getComposition(type);
 
@@ -146,19 +132,18 @@ const integrateText = async (type) => {
         switchWindowVisibility();
 
         textInfoObj.correctText = res[0];
-        textP.innerHTML += `${res[0]}`;
+        elements.textP.innerHTML += `${res[0]}`;
 
         if (res[1]) {
             textInfoObj.bookImage = res[1];
         }
     }
 
-    //no result
     else {
-        compositionInputDiv.classList.toggle('hidden');
+        elements.compositionInputDiv.classList.toggle('hidden');
         document.querySelector('.start-window__div-loading').classList.toggle('hidden');
         
-        errMsg.textContent = 'По вашему запросу ничего не найдено. Попробуйте другое слово'
+        elements.errMsg.textContent = 'По вашему запросу ничего не найдено. Попробуйте другое слово'
     }
 };
 
@@ -183,9 +168,9 @@ const styleDefaultInput = (input) => {
 };
 
 const insertWords = () => {
-    textP.textContent = '';
+    elements.textP.textContent = '';
 
-    textP.innerHTML = (!textInfoObj.showingErrorMessage ? 
+    elements.textP.innerHTML = (!textInfoObj.showingErrorMessage ? 
     `<span class='game-window__div-interactive__p__span-current'>${textInfoObj.userText}</span>${textInfoObj.correctText.slice(textInfoObj.userText.length, textInfoObj.correctText.length)}`
     : `<span class='game-window__div-interactive__p__span-current'>${textInfoObj.userText.slice(0, textInfoObj.wrongChars)}</span><span class='game-window__div-interactive__p__span-incorrect'>${textInfoObj.middlePartWrong}</span>${textInfoObj.rightPartCorrect}`
     );
@@ -199,18 +184,17 @@ const getInput = (e) => {
     textInfoObj.userText = e.target.value;
 
     if (textInfoObj.userText.trim() === '') {
-        textP.textContent = '';
-        textP.innerHTML = `<span class='game-window__div-interactive__p__span-current'>${textInfoObj.userText}</span>${textInfoObj.correctText.slice(textInfoObj.userText.length, textInfoObj.correctText.length)}`
+        elements.textP.textContent = '';
+        elements.textP.innerHTML = `<span class='game-window__div-interactive__p__span-current'>${textInfoObj.userText}</span>${textInfoObj.correctText.slice(textInfoObj.userText.length, textInfoObj.correctText.length)}`
 
-        styleDefaultInput(userInputField);
+        styleDefaultInput(elements.userInputField);
     
         return;
     }
 
-    if (userInputField.value !== textInfoObj.correctText.slice(0, textInfoObj.userText.length)) {
+    if (elements.userInputField.value !== textInfoObj.correctText.slice(0, textInfoObj.userText.length)) {
         textInfoObj.errors+=1;
 
-        //index of error char
         if (textInfoObj.wrongChars.length === 0) {
             textInfoObj.wrongChars = textInfoObj.userText.length - 1;
         }
@@ -224,14 +208,14 @@ const getInput = (e) => {
             errorMessage.textContent = 'Исправьте ошибку';
         }
             
-        userInputField.parentNode.insertBefore(errorMessage, userInputField);
+        elements.userInputField.parentNode.insertBefore(errorMessage, elements.userInputField);
     }
 
     else {
         textInfoObj.showingErrorMessage = false;
         textInfoObj.wrongChars = '';
 
-        styleDefaultInput(userInputField);
+        styleDefaultInput(elements.userInputField);
         errorMessage.remove();
     }
 
@@ -244,10 +228,10 @@ const getInput = (e) => {
     insertWords();
 
     if (textInfoObj.showingErrorMessage) {
-        styleErrorInput(userInputField);
+        styleErrorInput(elements.userInputField);
     }
 
-    const isUpdatePositionAllowed = updatePositionAllowed(textInfoObj.correctText.length, textInfoObj.userText.length, window.getComputedStyle(userPositionLine).width, textInfoObj.checkpoint);
+    const isUpdatePositionAllowed = updatePositionAllowed(textInfoObj.correctText.length, textInfoObj.userText.length, window.getComputedStyle(elements.userPositionLine).width, textInfoObj.checkpoint);
 
     if (isUpdatePositionAllowed[0] === true && !textInfoObj.showingErrorMessage) {
         textInfoObj.checkpoint++;
@@ -267,21 +251,21 @@ const getInput = (e) => {
             localStorage.setItem('record', newRecord);
         }
 
-        gameWindow.classList.toggle('hidden');  
-        resultWindow.classList.toggle('hidden');
+        elements.gameWindow.classList.toggle('hidden');  
+        elements.resultWindow.classList.toggle('hidden');
         
         if (textInfoObj.isComposition) {
-            resultBookDiv.innerHTML = '';
-            resultBookDiv.innerHTML = `<p class='result-window__book-info__author'>${textInfoObj.bookAuthors.length > 1 ? 'Авторы' : 'Автор'}: ${textInfoObj.bookAuthors[0]}${textInfoObj.bookAuthors.slice(1).join(', ') ? '<br>' + textInfoObj.bookAuthors.slice(1).join(', ') : ''}</p>
+            elements.resultBookDiv.innerHTML = '';
+            elements.resultBookDiv.innerHTML = `<p class='result-window__book-info__author'>${textInfoObj.bookAuthors.length > 1 ? 'Авторы' : 'Автор'}: ${textInfoObj.bookAuthors[0]}${textInfoObj.bookAuthors.slice(1).join(', ') ? '<br>' + textInfoObj.bookAuthors.slice(1).join(', ') : ''}</p>
                                         <p class='result-window__book-info__title'>Название: ${textInfoObj.bookTitle}</p>`;
 
             if (textInfoObj.bookImage) {
-                resultBookDiv.innerHTML += `<img src=${textInfoObj.bookImage} alt='book image'>`;
+                elements.resultBookDiv.innerHTML += `<img src=${textInfoObj.bookImage} alt='book image'>`;
             }
         }
 
-        resultP.innerHTML = '';
-        resultP.innerHTML = `<p>Игра пройдена <br> Ваш результат: ${textInfoObj.speed.toFixed(2)} знаков в минуту <br> Количество ошибок: ${textInfoObj.errors}`;
+        elements.resultP.innerHTML = '';
+        elements.resultP.innerHTML = `<p>Игра пройдена <br> Ваш результат: ${textInfoObj.speed.toFixed(2)} знаков в минуту <br> Количество ошибок: ${textInfoObj.errors}`;
     }
 
     if (textInfoObj.userText.length > 0 && textInfoObj.currentlyTyping) {
@@ -289,8 +273,8 @@ const getInput = (e) => {
         const timeElapsed = (currentTime - textInfoObj.startTime) / 1000;
 
         textInfoObj.speed = textInfoObj.userText.length / (timeElapsed / 60);
-        speedSpan.textContent = `Текущая скорость печати: ${textInfoObj.speed.toFixed(2)}`;
-        errorsSpan.textContent = `Текущее кол-во ошибок: ${textInfoObj.errors}`;
+        elements.speedSpan.textContent = `Текущая скорость печати: ${textInfoObj.speed.toFixed(2)}`;
+        elements.errorsSpan.textContent = `Текущее кол-во ошибок: ${textInfoObj.errors}`;
     }
 };
 
@@ -301,17 +285,17 @@ const startTimer = () => {
     }
 };
 
-playButton.addEventListener('click', switchOptionsVisibility);
+elements.playButton.addEventListener('click', switchOptionsVisibility);
 
-userInputField.addEventListener('input', getInput);
-userInputField.addEventListener('focus', startTimer);
+elements.userInputField.addEventListener('input', getInput);
+elements.userInputField.addEventListener('focus', startTimer);
 
-randomTextButton.addEventListener('click', () => integrateText('text'));
-wikiTextButton.addEventListener('click', () => integrateText('wiki'));
-randomCompositionButton.addEventListener('click', reqUserCompositionInput)
+elements.randomTextButton.addEventListener('click', () => integrateText('text'));
+elements.wikiTextButton.addEventListener('click', () => integrateText('wiki'));
+elements.randomCompositionButton.addEventListener('click', reqUserCompositionInput)
 
 document.addEventListener('DOMContentLoaded', () => {
     const recordData = localStorage.getItem('record');
 
-    recordSpan.textContent = recordData ? `Ваш текущий рекорд: ${recordData} знаков в минуту` : `У вас нет рекорда. Начните игру и установите собственный рекорд!`;
+    elements.recordSpan.textContent = recordData ? `Ваш текущий рекорд: ${recordData} знаков в минуту` : `У вас нет рекорда. Начните игру и установите собственный рекорд!`;
 });
